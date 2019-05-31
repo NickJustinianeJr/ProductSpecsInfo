@@ -20,12 +20,34 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/web.config"
             ],
             "styles": [
-              "src/styles.css"
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",        
+              "./src/assets/css/jquery.fancybox.min.css",
+              "./src/assets/css/fonts.googleapis.css",
+              "./src/assets/css/nifty.css",
+              "./src/assets/css/font-awesome.min.css",
+              "./src/assets/css/pace.min.css",
+
+              "./src/assets/css/normalize.css",
+              "./src/assets/css/demo.css",
+              "./src/assets/css/component.css",
+              "./src/assets/css/style.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "./src/assets/js/jquery.min.js", 
+              "./src/assets/js/jquery.fancybox.min.js",
+              "./src/assets/js/classie.js",
+              "./src/assets/js/gnmenu.js",
+              "./src/assets/js/pace.min.js",
+              "./src/assets/js/autocomplete.js",
+              "./src/assets/js/jszip.js",
+              "./src/assets/js/excel.js",
+              "./src/assets/js/prodspecs.js"
+            ],
             "es5BrowserSupport": true
           },
           "configurations": {
@@ -132,5 +154,13 @@
       }
     }
   },
-  "defaultProject": "productspecs"
+  "defaultProject": "productspecs",
+  "schematics": {
+    "@schematics/angular:component": {
+      "prefix": "app"
+    },
+    "@schematics/angular:directive": {
+      "prefix": "app"
+    }
+  }
 }

@@ -1,0 +1,168 @@
+<div id="container" class="main-content effect mainnav-sm footer-fixed">
+
+  <div class="pace pace-inactive">
+    <div class="pace-progress" data-progress-text="100%" data-progress="99" style="width: 100%;">
+      <div class="pace-progress-inner"></div>
+    </div>
+
+    <div class="pace-activity"></div>
+  </div>
+
+  <div id="content">
+  <div class="container nav-normal">
+
+    <div class="col-md-6 col-auto">
+       <div class="padding-top: 9px;font-size:14px;">         
+              <div class="search-label">Sample Stage: 
+                  <span *ngIf="productSpecs">{{ productSpecs.sampleStage }}</span>
+                </div>
+          </div>
+          
+    </div>
+
+    <div class="col-md-6 col-auto">
+      <ul class="horizontal-list">
+        <li>
+          <div class="search-label">Style: 
+            <span *ngIf="productSpecs">{{ productSpecs.styleId }} 
+              <span *ngIf="productSpecs.styleId">|</span> {{ productSpecs.seasonId }}</span>
+          </div>
+        </li>
+        
+        <li>
+          
+           <div class="searchbox" id="searchBox">
+            <form [formGroup]="searchStyleForm" (ngSubmit)="onSearchStyle()" autocomplete="off">
+              <div class="input-group padding-zero">
+                <input type="text" id="myInput" class="form-control search" 
+                [formControl]="searchText"
+                  style="font-size:14px; background-color: #e7ebee; border-radius: 15px;"
+                  placeholder="Search for Style">
+
+                <span class="input-group-btn">
+                  <button  class="text-muted" type="submit" name="submit" value="Submit">
+                    <i class="fa fa-search"></i></button>
+                </span>
+              </div>
+            </form>
+          </div>
+          
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="boxed">
+    
+    <div class="center"><div class="text-bold text text-overflow" style="font-size: 24px;">
+        PRODUCT SPECIFICATION</div></div>
+
+        <div class="row export-button" id="exportToPDFSearch">
+            <div class="export">
+              <button class="btn btn-primary" style="margin-top: 15px;" (click)="exportToPDF($event)">EXPORT TO PDF</button>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <button class="btn btn-success" style="margin-top: 15px;" (click)="exportToExcel($event)">EXPORT TO EXCEL</button>
+            </div>
+          </div>
+  
+
+
+          <div class="row" id="hidden-content">
+
+        <div class="col-md-6" *ngIf="productSpecsCategoryList.length">
+          <div class="first-column" *ngFor="let productSpecsCategory of productSpecsCategoryList; let index = index">
+
+            <div *ngIf="index == 0" id="sketch" class="panel panel-primary" style="margin-bottom: 10px;">
+
+              <div class="panel-heading" style="height: 30px;">
+                <div class="center">
+                  <div style="font-weight: bold; font-size: 16px; padding: 0px;line-height: 30px;">
+                    SKETCH/ REFERENCE SAMPLE
+                  </div> |
+                  <div class="text-xs">
+                    CFT
+                  </div>
+                </div>
+              </div>
+              <div class="panel-body">
+                <div class="center">
+                  <a href='assets/images/{{ productSpecs.attachment }}'>
+                    <img src='assets/images/{{ productSpecs.attachment }}' alt='{{ productSpecs.attachment }}'
+                      class="assets-img" />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="productSpecsCategory.productSpecsComments.length"
+              id="Specs{{ productSpecsCategory.recId | lowercase }}" class="panel panel-primary"
+              style="margin-bottom: 10px;">
+
+              <div class="panel-heading" style="height: 30px;">
+                <div class="center">
+                  <div style="font-weight: bold; font-size: 16px; padding: 0px; line-height: 30px;">
+                    {{ productSpecsCategory.description }}</div> |
+                  <div class="text-xs">
+                    {{ productSpecsCategory.ownership }}
+                  </div>
+                </div>
+              </div>
+              <div class="panel-body">
+                <table class="specs-table">
+                  <tr *ngFor="let comment of productSpecsCategory.productSpecsComments">
+                    <td style='padding: 6px 0px 6px 0px;'>
+                      <h4 class='text-primary text-overflow text-subject'>
+                        {{ comment.subject }}
+                      </h4>
+                      <div [innerHTML]="comment.text"></div>
+
+                      <div class='pad-top' *ngIf="comment.attachment">
+                        <div class="center">
+                          <a href='assets/images/{{comment.attachment}}'>
+                            <img src='assets/images/{{comment.attachment}}' alt='{{comment.attachment}}'
+                              class="assets-img" />
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div> <!-- End of First Column!! -->
+
+      </div>
+      
+    <div id="page-content">
+      
+      <div class="row" style="margin-top: 10px !important;">
+
+        <div id="firstColumn"></div> <!-- End of First Column!! -->
+        <div id="secondColumn"></div> <!-- End of Second Column!! -->
+        <div id="thirdColumn"></div>
+
+      </div>
+    </div>
+   
+    <div *ngIf="productSpecsCategoryList.length || sketchOnly">
+
+    <footer id="footer" >
+      <div class="show-fixed pull-right pad-rgt">CFT in Charge: <object class="text-bold"></object> | Reviewed &amp;
+        Approved By: <object class="text-bold"></object></div>
+      <div class=" show-fixed pull-left pad-lft text-danger text-bold"> DO NOT DUPLICATE, DO NOT RECYCLE AND HIGHLY
+        CONFIDENTIAL!!!</div>
+    </footer>
+
+    <div id="scroll" class="btn-group">
+      <button id="scroll-top" class="btn"><i class="fa fa-chevron-up"></i></button>
+    </div>
+ 
+    </div>
+ 
+</div>
+</div>
+</div>
