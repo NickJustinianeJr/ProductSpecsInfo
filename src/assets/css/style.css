@@ -42,8 +42,16 @@
 
 .main-content {
   
-	margin-top: 40px;
-	
+  margin-top: 40px;
+  
+}
+
+.float-center{
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #exportToPDF {
@@ -283,8 +291,8 @@
     width: 100%;
     height: auto !important;
     text-align: left !important;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
   
   #specs-container {
@@ -362,6 +370,10 @@
  .export {
    text-align: right !important;
    margin-right: 15px !important;
+   float: right;
+   right: 0 !important;
+   position: relative;
+   z-index: 99;
  }
   
   .specs-table tr:not(:last-child) {
@@ -399,4 +411,8 @@
 
   h4 {
     margin-bottom: 0px !important;
+  }
+
+  #searchValidation {
+    display: none;
   }

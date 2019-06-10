@@ -1,8 +1,8 @@
 export function autocomplete(inp, arr) {
 
   console.log("this is a autocomplete script");
-  console.log(inp);
-  console.log(arr);
+  // console.log(inp);
+  // console.log(arr);
 
   /*the autocomplete function takes two arguments,
   the text field element and an array of possible autocompleted values:*/
@@ -23,28 +23,36 @@ export function autocomplete(inp, arr) {
     a.setAttribute("class", "autocomplete-items");
     /*append the DIV element as a child of the autocomplete container:*/
     this.parentNode.appendChild(a);
+
     /*for each item in the array...*/
     for (i = 0; i < arr.length; i++) {
 
       if (val.length > 2) {
-        
+
+        var submitButton = document.getElementById("searchBtn");
+        console.log(submitButton);
+
+        // submitButton.setAttribute("disabled", "false");
+
+
         /*check if the item starts with the same letters as the text field value:*/
-      // if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-        
-          if (arr[i].toUpperCase().includes(val.toUpperCase())) {
-            
-             /*create a DIV element for each matching element:*/
+        // if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+
+        if (arr[i].toUpperCase().includes(val.toUpperCase())) {
+
+          /*create a DIV element for each matching element:*/
           b = document.createElement("DIV");
 
           /*make the matching letters bold:*/
           //b.innerHTML = "<strong>" + val.toUpperCase() + "</strong>";
-         
+
           var searchText = "<strong>" + val.toUpperCase() + "</strong>";
-         
+
           b.innerHTML += arr[i].replace(val.toUpperCase(), searchText);
           console.log(b.innerHTML);
-          
+
           console.log(searchText);
+          
 
           /*insert a input field that will hold the current array item's value:*/
           b.innerHTML += "<input type='hidden' value='" + arr[i].replace(searchText, val.toUpperCase()) + "'>";
@@ -68,44 +76,75 @@ export function autocomplete(inp, arr) {
 
         }
 
-         console.log("search");
+        console.log("search");
+
+      } else {
+
+        console.log("set disabled true");
+        // submitButton.setAttribute("disabled", "true");
 
       } // End of Condition
-      
+
     }
   });
-
-  // inp.addEventListener("change", function(e) {
-  //     console.log(e);
-  //     alert(document.getElementById("myInput").value);
-
-  // });
 
   /*execute a function presses a key on the keyboard:*/
   inp.addEventListener("keydown", function (e) {
     var x = document.getElementById(this.id + "autocomplete-list");
+
     if (x) x = x.getElementsByTagName("div");
+
     if (e.keyCode == 40) {
+
       /*If the arrow DOWN key is pressed,
       increase the currentFocus variable:*/
       currentFocus++;
+
       /*and and make the current item more visible:*/
       addActive(x);
+
     } else if (e.keyCode == 38) { //up
+
       /*If the arrow UP key is pressed,
       decrease the currentFocus variable:*/
       currentFocus--;
+
       /*and and make the current item more visible:*/
       addActive(x);
+    } else if (e.keyCode == 13) {
+
+      console.log("enter");
+      console.log(currentFocus);
+
+      /*If the ENTER key is pressed, prevent the form from being submitted,*/
+      e.preventDefault();
+
+      var submitButton = document.getElementById("searchBtn");
+
+      if (currentFocus > -1) {
+
+        console.log(x[currentFocus]);
+        console.log(x);
+
+        /*and simulate a click on the "active" item:*/
+        if (x) x[currentFocus].click();
+
+        var myInput = document.getElementById("myInput");
+
+        console.log(myInput);
+
+        submitButton.click();
+
+      } else {
+
+        console.log(submitButton);
+
+        submitButton.click();
+
+      }
+
     }
-    // else if (e.keyCode == 13) {
-    // /*If the ENTER key is pressed, prevent the form from being submitted,*/
-    // e.preventDefault();
-    // if (currentFocus > -1) {
-    // 	/*and simulate a click on the "active" item:*/
-    // 	if (x) x[currentFocus].click();
-    // 	}
-    // }
+
   });
 
   function addActive(x) {
@@ -140,7 +179,12 @@ export function autocomplete(inp, arr) {
   /*execute a function when someone clicks in the document:*/
   document.addEventListener("click", function (e) {
 
+    console.log("EventListener Click");
+    console.log(e.target);
+
     closeAllLists(e.target);
 
   });
+
+
 }

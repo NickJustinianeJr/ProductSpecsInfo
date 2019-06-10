@@ -4,13 +4,13 @@
   
       <li class="gn-trigger">
   
-        <a (click)="onTriggerClick($event)" (mouseover)="openIconMenu($event)" 
+        <a (mouseover)="openIconMenu($event)" 
         (mouseout)="closeIconMenu($event)" 
         class="gn-icon gn-icon-menu">
           <span>Menu</span>
           </a>
   
-        <nav (click)="onMenuClick($event)" (mouseover)="openMenu($event)" class="gn-menu-wrapper">
+        <nav (click)="onMenuClick($event)" (mouseover)="openMenu($event)" (mouseout)="closeMenu($event)" class="gn-menu-wrapper">
           <div class="gn-scroller">
 
             <ul class="gn-menu">

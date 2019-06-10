@@ -1,74 +1,110 @@
 <div id="container" class="main-content effect mainnav-sm footer-fixed">
-
+<!-- 
   <div class="pace pace-inactive">
     <div class="pace-progress" data-progress-text="100%" data-progress="99" style="width: 100%;">
       <div class="pace-progress-inner"></div>
     </div>
 
     <div class="pace-activity"></div>
-  </div>
+  </div> -->
 
   <div id="content">
-  <div class="container nav-normal">
+    <div class="container nav-normal">
 
-    <div class="col-md-6 col-auto">
-       <div class="padding-top: 9px;font-size:14px;">         
-              <div class="search-label">Sample Stage: 
-                  <span *ngIf="productSpecs">{{ productSpecs.sampleStage }}</span>
-                </div>
+      <div class="col-md-5 col-auto">
+        <div class="padding-top: 9px;font-size:14px;">
+          <div class="search-label">Sample Stage:
+            <span *ngIf="productSpecs">{{ productSpecs.sampleStage }}</span>
           </div>
-          
-    </div>
+        </div>
+      </div>
 
-    <div class="col-md-6 col-auto">
-      <ul class="horizontal-list">
-        <li>
-          <div class="search-label">Style: 
-            <span *ngIf="productSpecs">{{ productSpecs.styleId }} 
-              <span *ngIf="productSpecs.styleId">|</span> {{ productSpecs.seasonId }}</span>
-          </div>
-        </li>
-        
-        <li>
-          
-           <div class="searchbox" id="searchBox">
-            <form [formGroup]="searchStyleForm" (ngSubmit)="onSearchStyle()" autocomplete="off">
-              <div class="input-group padding-zero">
-                <input type="text" id="myInput" class="form-control search" 
-                [formControl]="searchText"
-                  style="font-size:14px; background-color: #e7ebee; border-radius: 15px;"
-                  placeholder="Search for Style">
-
-                <span class="input-group-btn">
-                  <button  class="text-muted" type="submit" name="submit" value="Submit">
-                    <i class="fa fa-search"></i></button>
-                </span>
-              </div>
-            </form>
-          </div>
-          
-        </li>
-      </ul>
-    </div>
-  </div>
-
-
-  <div class="boxed">
-    
-    <div class="center"><div class="text-bold text text-overflow" style="font-size: 24px;">
-        PRODUCT SPECIFICATION</div></div>
-
-        <div class="row export-button" id="exportToPDFSearch">
-            <div class="export">
-              <button class="btn btn-primary" style="margin-top: 15px;" (click)="exportToPDF($event)">EXPORT TO PDF</button>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <button class="btn btn-success" style="margin-top: 15px;" (click)="exportToExcel($event)">EXPORT TO EXCEL</button>
+      <div class="col-md-7 col-auto">
+        <ul class="horizontal-list">
+          <li>
+            <div class="search-label">Style:
+              <span *ngIf="productSpecs">{{ productSpecs.styleId }}
+                <span *ngIf="productSpecs.styleId">|</span> {{ productSpecs.seasonId }}</span>
             </div>
+          </li>
+
+          <li>
+
+            <div class="searchbox" id="searchBox">
+              <form [formGroup]="searchStyleForm" (ngSubmit)="onSearchStyle()" autocomplete="off">
+
+                <div class="container" style="margin: 0px !important; padding: 0px !important;">
+                  <div class="row" style="margin: 0px !important; padding: 0px !important;">
+
+                    <div class="col-md-3" style="margin-left: 0px !important; padding-left: 0px !important;
+                      margin-right: 0px !important; padding-right: 0px !important;">
+
+                      <div class="input-group padding-zero">
+                        <input type="text" id="myInput" class="form-control search" [formControl]="searchText"
+                          style="font-size:14px; background-color: #e7ebee; border-radius: 15px;"
+                          placeholder="Search for Style" (enter)="onSearchStyle()" (keydown)="onInput($event)">
+
+                        <span class="input-group-btn">
+                          <button id="searchBtn" class="text-muted" type="submit" name="submit" value="Submit">
+                            <i class="fa fa-search"></i></button>
+                        </span>
+                      </div>
+
+                    </div>
+                    <div class="col-md-2" style="margin-left: 0px !important; margin-right: 0px !important;">
+
+                      <select style="font-size:14px; background-color: #e7ebee; cursor:pointer; border-radius: 6px;"
+                        class="form-control" (click)="onSeasonSelect($event)" id="seasonSelect" [formControl]="seasonId">
+
+                        <option style="padding-top: 5px;padding-top: 5px; cursor:pointer;" value="">SEASON ID</option>
+
+                        <option style="padding-top: 5px;padding-top: 5px; cursor:pointer;"
+                          *ngFor="let season of productSpecsSeasons; let index = index" value="{{ season }}">
+                          {{ season}}
+                        </option>
+
+                      </select>
+                    </div>
+                    <div class="col-md-7" style="margin-left: 0px; padding-left: 0px;">
+                      <span id="searchValidation" name="searchValidation" class="text-danger"
+                        style="padding-top: 5px; font-size: 14px;">
+                        Please select a Season ID
+                      </span>
+                    </div>
+
+
+                  </div>
+                </div>
+
+
+
+
+              </form>
+            </div>
+
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+    <div class="boxed">
+
+      <div class="center">
+
+        <div class="text-bold text text-overflow" style="font-size: 24px;">
+          <div class="float-center">
+            PRODUCT SPECIFICATION
           </div>
-  
+          <div class="export pull-right" id="exportToPDFSearch">
+            <button class="btn btn-primary" (click)="exportToPDF($event)">EXPORT TO PDF</button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="btn btn-success" (click)="exportToExcel($event)">EXPORT TO EXCEL</button>
+          </div>
+        </div>
+      </div>
 
-
-          <div class="row" id="hidden-content">
+      <div class="row" id="hidden-content">
 
         <div class="col-md-6" *ngIf="productSpecsCategoryList.length">
           <div class="first-column" *ngFor="let productSpecsCategory of productSpecsCategoryList; let index = index">
@@ -136,33 +172,44 @@
         </div> <!-- End of First Column!! -->
 
       </div>
-      
-    <div id="page-content">
-      
-      <div class="row" style="margin-top: 10px !important;">
 
-        <div id="firstColumn"></div> <!-- End of First Column!! -->
-        <div id="secondColumn"></div> <!-- End of Second Column!! -->
-        <div id="thirdColumn"></div>
+      <div id="page-content">
+
+        <div class="row" style="margin-top: 10px !important;">
+
+          <div id="firstColumn"></div> <!-- End of First Column!! -->
+          <div id="secondColumn"></div> <!-- End of Second Column!! -->
+          <div id="thirdColumn"></div>
+
+        </div>
+      </div>
+
+
+
+
+      
+
+      <div *ngIf="productSpecsCategoryList.length || sketchOnly">
+
+        <footer id="footer">
+
+          <div class="show-fixed pull-right pad-rgt" *ngIf="!sketchOnly">CFT in Charge:
+            <span class="text-bold" *ngIf="cftInCharge">
+              {{ cftInCharge }}
+            </span> | Reviewed &amp;
+            Approved By: <span class="text-bold" *ngIf="approver">{{ approver }}</span>
+          </div>
+          <div class="show-fixed pull-left pad-lft text-danger text-bold">
+            DO NOT DUPLICATE, DO NOT RECYCLE AND HIGHLY CONFIDENTIAL!!!
+          </div>
+        </footer>
+
+        <div id="scroll" class="btn-group">
+          <button id="scroll-top" class="btn"><i class="fa fa-chevron-up"></i></button>
+        </div>
 
       </div>
-    </div>
-   
-    <div *ngIf="productSpecsCategoryList.length || sketchOnly">
 
-    <footer id="footer" >
-      <div class="show-fixed pull-right pad-rgt">CFT in Charge: <object class="text-bold"></object> | Reviewed &amp;
-        Approved By: <object class="text-bold"></object></div>
-      <div class=" show-fixed pull-left pad-lft text-danger text-bold"> DO NOT DUPLICATE, DO NOT RECYCLE AND HIGHLY
-        CONFIDENTIAL!!!</div>
-    </footer>
-
-    <div id="scroll" class="btn-group">
-      <button id="scroll-top" class="btn"><i class="fa fa-chevron-up"></i></button>
     </div>
- 
-    </div>
- 
-</div>
-</div>
+  </div>
 </div>

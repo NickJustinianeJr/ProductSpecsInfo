@@ -15,14 +15,17 @@ const httpOptions = {
 @Injectable({ providedIn: 'root' })
 export class ProductSpecsService {
 
-  private productsUrl = 'http://172.16.94.71:8082/api/products';
-  
+ private productsUrl = 'http://172.16.94.71:8082/api/products';
+
+  // private productsUrl = 'http://localhost:56750/api/products';
 
   constructor(
     private http: HttpClient) { }
 
-  searchProductSpecs (searchText: string): Observable<ProductSpecsByCategory> {
-    const searchUrl = this.productsUrl + "/searchproducts/" + searchText;
+  searchProductSpecs (searchText: string, seasonId: string): Observable<ProductSpecsByCategory> {
+    const searchUrl = this.productsUrl + 
+    "/searchproducts/" + searchText + 
+    "/season/" + seasonId;
     
     console.log("searchUrl: " + searchUrl);
 
@@ -30,22 +33,26 @@ export class ProductSpecsService {
   }
 
   searchProductSpecsByStyleId (styleId: string): Observable<ProductSpecsByCategory> {
-    const styleUrl = this.productsUrl + "/searchproducts/style/" + styleId;
+    const styleUrl = this.productsUrl + "/searchproducts/style/" + styleId 
+    ;
     console.log("styleUrl: " + styleUrl);
 
     return this.http.get<ProductSpecsByCategory>(styleUrl);
   }
+  
+  getProductSpecsSeasons(): Observable<string[]> {
 
+    let searchUrl = this.productsUrl + "/seasons";
+    
+    console.log(searchUrl);
 
-  /** GET employees from the server */
-  // getEmployees (): Observable<ProductSpecs[]> {
-  //   return this.http.get<ProductSpecs[]>(this.usersUrl)
-  //     .pipe(
-  //       tap(_ => this.log('fetched employees')),
-  //       catchError(this.handleError('getEmployees', []))
-  //     );
-  // }
-
+    return this.http.get<string[]>(searchUrl)
+      .pipe(
+        tap(_ => this.log('fetched Product Specs Seasons')),
+        catchError(this.handleError('getProductSpecsSeasons', []))
+      );
+  }
+  
   getProductSpecsForDisplay (id: string): Observable<ProductSpecsByCategory> {
     return this.http.get<ProductSpecsByCategory>(this.productsUrl + "/" + "fordisplay/" + id);
   }
@@ -61,13 +68,13 @@ export class ProductSpecsService {
       "/samplestage/" + sampleStage);
   }
 
-  getProductSpecs (searchText: string = ""): Observable<ProductSpecs[]> {
+  getProductSpecs (seasonId: string): Observable<string[]> {
 
-    let searchUrl = this.productsUrl + "/productspecs";
+    let searchUrl = this.productsUrl + "/productspecs/" + seasonId;
     
     console.log(searchUrl);
 
-    return this.http.get<ProductSpecs[]>(searchUrl)
+    return this.http.get<string[]>(searchUrl)
       .pipe(
         tap(_ => this.log('fetched Product Specs')),
         catchError(this.handleError('getProductSpecs', []))
@@ -78,6 +85,20 @@ export class ProductSpecsService {
     let searchUrl = this.productsUrl + "/attachments/" + recId;
 
     return this.http.get<Blob>(searchUrl);
+  }
+
+  getExcelFileDisplayById(recId: string): Observable<string> {
+    let searchUrl = this.productsUrl + "/productspecs/excelfile/display/" + recId;
+    console.log(searchUrl);
+
+    return this.http.get<string>(searchUrl);
+  }
+
+  getExcelFileDraftById(recId: string): Observable<string> {
+    let searchUrl = this.productsUrl + "/productspecs/excelfile/draft/" + recId;
+    console.log(searchUrl);
+
+    return this.http.get<string>(searchUrl);
   }
 
 //    /** GET employees from the server */

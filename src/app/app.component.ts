@@ -61,7 +61,7 @@ export class AppComponent {
 
     menu.classList.remove("gn-open-part");
 
-    document.addEventListener("click", this.closeMenu); 
+    // document.addEventListener("click", this.closeMenu); 
     
     console.log("End of openMenu");
     
@@ -92,7 +92,9 @@ export class AppComponent {
 
     menu.classList.remove("gn-open-part");
     
-    document.removeEventListener(e.type, this.closeMenu); 
+    console.log(e.type);
+
+    // document.removeEventListener(e.type, this.closeMenu); 
     
     console.log("End of closeMenu");
   }
@@ -126,10 +128,12 @@ export class AppComponent {
     
     if (isMenuOpen) {
       this.closeMenu(e);
-      document.removeEventListener("click", this.closeMenu);
+
+      // document.removeEventListener("click", this.closeMenu);
     } else {
       this.openMenu(e);
-      document.addEventListener("click", this.closeMenu);
+      
+      // document.addEventListener("click", this.closeMenu);
     }
 
   }

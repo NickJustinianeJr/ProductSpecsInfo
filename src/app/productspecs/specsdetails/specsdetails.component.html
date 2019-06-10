@@ -12,23 +12,25 @@
   <div class="boxed">
 
       <div class="center">
-        <div class="text-bold text text-overflow" style="font-size: 24px;">
-          PRODUCT SPECIFICATION
-        </div>
-      </div>
 
-      <div class="row"  id="exportToPDF">
-          <div class="export">
+        <div class="text-bold text text-overflow" style="font-size: 24px;">
+          <div class="float-center">
+           PRODUCT SPECIFICATION
+          </div>
+          <div class="export pull-right" id="exportToPDF">
               <button class="btn btn-primary" (click)="exportToPDF($event)">EXPORT TO PDF</button>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <button class="btn btn-success" (click)="exportToExcel($event)">EXPORT TO EXCEL</button>
             </div>
         </div>
-    
+        
+      </div>
 
-        <div id="hidden-content">
-            <div class="row">
       
+       
+            
+
+        <div id="hidden-content" class="row">      
               <div class="col-md-6">
                  <div class="first-column" *ngFor="let productSpecsCategory of productSpecsCategoryList; let index = index">
       
@@ -94,8 +96,6 @@
                 </div>
                 
               </div> <!-- End of First Column!! -->
-
-              </div>
         </div> <!-- End of Hidden Content -->
         
         
@@ -113,13 +113,13 @@
      
 
       <footer id="footer">
-        <div class="show-fixed pull-right pad-rgt">CFT in Charge: <object class="text-bold"></object> | Reviewed &amp;
-          Approved By: <object class="text-bold"></object></div>
-        <div class=" show-fixed pull-left pad-lft text-danger text-bold"> DO NOT DUPLICATE, DO NOT RECYCLE AND HIGHLY
-          CONFIDENTIAL!!!</div>
+       
+        <div class="show-fixed pull-left pad-lft text-danger text-bold"> 
+          DO NOT DUPLICATE, DO NOT RECYCLE AND HIGHLY CONFIDENTIAL!!!
+        </div>
       </footer>
 
-      <div class="btn-group">
+      <div id="scroll" class="btn-group">
         <button id="scroll-top" class="btn"><i class="fa fa-chevron-up"></i></button>
       </div>
 

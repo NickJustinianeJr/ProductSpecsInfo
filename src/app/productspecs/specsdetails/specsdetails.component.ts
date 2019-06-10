@@ -1,7 +1,7 @@
 import {
   Renderer2,
   Component,
-  OnInit,
+  OnDestroy,
   Inject,
   ViewChild,
   ElementRef,
@@ -9,7 +9,7 @@ import {
   QueryList,
   ViewChildren,
   EventEmitter,
-  Output,  
+  Output,
   AfterViewChecked
 } from '@angular/core';
 
@@ -22,7 +22,9 @@ import {
   ProductSpecsService,
 } from '../../services/productspecs.service';
 
-import { ExcelService } from '../../services/shared.service';
+import {
+  ExcelService
+} from '../../services/shared.service';
 
 import * as $ from 'jquery';
 
@@ -39,6 +41,8 @@ import '../../../assets/js/excel.js';
 import * as jspdf from 'jspdf';
 
 import html2canvas from 'html2canvas';
+
+import { Subscription } from 'rxjs';
 
 import {
   ProductSpecs,
@@ -58,8 +62,8 @@ import {
   templateUrl: './specsdetails.component.html',
   styleUrls: ['./specsdetails.component.css']
 })
-export class SpecsdetailsComponent implements AfterViewChecked, OnInit {
-  productSpecsByCategory: ProductSpecsByCategory = new ProductSpecsByCategory();
+export class SpecsdetailsComponent implements AfterViewChecked, OnDestroy  {
+  productSpecsByCategory: ProductSpecsByCategory;
 
   productSpecsCategoryList: ProductSpecsCategory[] = [];
   firstColumn: ProductSpecsCategory[] = [];
@@ -77,9 +81,10 @@ export class SpecsdetailsComponent implements AfterViewChecked, OnInit {
   specsColumnCombinations: SpecsColumnCombinations[] = [];
   firstColumnIndexHeight: string[] = [];
   secondColumnIndexHeight: string[] = [];
-  sketchHeight: number = 0;
- // approved: boolean = true;
+  sketchHeight: number = 0;  
   
+  private httpSubscription: Subscription;
+
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -91,72 +96,120 @@ export class SpecsdetailsComponent implements AfterViewChecked, OnInit {
     this.getProductSpecsByStyleId();
 
     this.documentBody = _document.body;
-    console.log()
 
   }
 
-  ngOnInit() {
-    
+  ngOnDestroy() {
+    console.log("ngOnDestroy");
+
+    this.httpSubscription.unsubscribe();
+
+    this.productSpecsByCategory = null;
+    this.productSpecs = null;
+    this.firstColumn = [];
+    this.secondColumn = [];
+    this.productSpecsCategoryList = [];
+    this.balanceHeight = 0;
+    this.totalHtmlHeight = 0;
+    this.sketchHeight = 0;
+    this.specsColumnCombinations = [];
+    this.firstColumnIndexHeight = [];
+    this.secondColumnIndexHeight = [];
   }
 
   ngAfterViewChecked() {
     
     if ($("#menu-container"))
-        $("#menu-container").remove();
+      $("#menu-container").remove();
+      
+      
+      
+    if (event)
+    {
+    if (event.type == "blur")
+    {
+      console.log("return blur");
+      return;
+    }
+  }
+  
+      if (event)
+      {
+      if (event.type == "click")
+      {
+        console.log("return click");
+        return;
+      }
+    }
+    
+  
+    if (this.productSpecsByCategory && this.productSpecs)
+    {
+      var sketchProd = $("#sketchProd").val();
+      console.log(sketchProd);
+  
+      if (sketchProd == this.productSpecs.recId)
+          return;
 
-    console.log("ngAfterViewChecked");
-    console.log($("#firstColumn").is(":empty"));
+      console.log("PRODUCTSPECSBYCATEGORY REQUEST NOT RETURNED");
 
-    if ($("#firstColumn").is(":empty") && $("#secondColumn").is(":empty")) {
+      $("#firstColumn").empty();
+      $("#secondColumn").empty();
 
-      let productSpecsList = this.productSpecsCategoryList;
-      console.log(productSpecsList);
+      if ($("#firstColumn").is(":empty") && $("#secondColumn").is(":empty")) {
 
-      var totalHtmlHeight = 0;
+        let productSpecsList = this.productSpecsCategoryList;
+        // console.log(productSpecsList);
 
-      for (var productSpecsIndex in productSpecsList) {
-        let height = 0;
+        var totalHtmlHeight = 0;
 
-        let idSelector = "#Specs" + (productSpecsList[productSpecsIndex].recId).toLowerCase();
-        var specs = $(idSelector);
-        console.log(idSelector);
+        for (var productSpecsIndex in productSpecsList) {
+          let height = 0;
 
-        height = height + specs.innerHeight();
+          let idSelector = "#Specs" + (productSpecsList[productSpecsIndex].recId).toLowerCase();
+          var specs = $(idSelector);
+          // console.log(idSelector);
 
-        for (var comment of productSpecsList[productSpecsIndex].productSpecsComments) {
-          if (comment.attachment) {
-            console.log("attachment height: " + comment.attachmentHeight);
-            height = height + comment.attachmentHeight;
+          height = height + specs.innerHeight();
+
+          for (var comment of productSpecsList[productSpecsIndex].productSpecsComments) {
+            if (comment.attachment) {
+              //console.log("attachment height: " + comment.attachmentHeight);
+              height = height + comment.attachmentHeight;
+            }
           }
+
+         // console.log("Actual Category Height: " + height);
+
+          productSpecsList[productSpecsIndex].htmlHeight = height;
+
+          totalHtmlHeight = totalHtmlHeight + height;
         }
 
-        console.log("Actual Category Height: " + height);
 
-        productSpecsList[productSpecsIndex].htmlHeight = height;
+        var sketchHtmlHeight = $("#sketch").innerHeight();
+        var productSpecs = this.productSpecsByCategory.productSpecs;
+        var sketchHeight = sketchHtmlHeight + productSpecs.attachmentHeight;
 
-        totalHtmlHeight = totalHtmlHeight + height;
+        // console.log(sketchHtmlHeight);
+        // console.log(productSpecs.attachmentHeight);
+        // console.log("Sketch Height: " + sketchHeight);
+        // console.log("Total Html Height Witout Sketch Height: " + totalHtmlHeight);
+
+        totalHtmlHeight = totalHtmlHeight + sketchHeight;
+
+        // console.log("Total Html Height: " + totalHtmlHeight);
+
+        this.sketchHeight = sketchHeight;
+        this.totalHtmlHeight = totalHtmlHeight;
+
+        this.renderColumns();
+
       }
-
-
-      var sketchHtmlHeight = $("#sketch").innerHeight();
-      var productSpecs = this.productSpecsByCategory.productSpecs;
-      var sketchHeight = sketchHtmlHeight + productSpecs.attachmentHeight;
-
-      console.log(sketchHtmlHeight);
-      console.log(productSpecs.attachmentHeight);
-      console.log("Sketch Height: " + sketchHeight);
-      console.log("Total Html Height Witout Sketch Height: " + totalHtmlHeight);
-
-      totalHtmlHeight = totalHtmlHeight + sketchHeight;
-
-      console.log("Total Html Height: " + totalHtmlHeight);
-
-      this.sketchHeight = sketchHeight;
-      this.totalHtmlHeight = totalHtmlHeight;
-
-      this.renderColumns();
-
     }
+
+
+
   }
 
   bin2String(array) {
@@ -170,33 +223,19 @@ export class SpecsdetailsComponent implements AfterViewChecked, OnInit {
   }
 
   exportToExcel(e) {
-    
-    let productList = this.productSpecsCategoryList;
-      
-    console.log(productList);
-    
-    var sketchSpecs = new ProductSpecsCategory();
-    sketchSpecs.recId = "";
-    sketchSpecs.code = "";
-    sketchSpecs.description = "SKETCH/ REFERENCE SAMPLE";
-    sketchSpecs.ownership = "CFT";
 
-    var sketchComments: ProductSpecsComment[] = [];
+    this.productSpecsService.getExcelFileDraftById(this.productSpecs.recId)
+      .toPromise()
+      .then(excel => {
 
-    var sketchSpecsComment = new ProductSpecsComment();
-    sketchSpecsComment.attachment = this.productSpecs.attachment;
+        console.log(excel);
 
-    sketchComments.push(sketchSpecsComment);
+        this.excelService.exportToExcel(excel, this.productSpecs.styleId);
 
-    sketchSpecs.productSpecsComments = sketchComments;
+        console.log("done exporting");
+      });
 
-    productList.unshift(sketchSpecs);
-
-    this.excelService.exportAsExcelFile(productList, this.productSpecs.styleId);
-  
   }
-
- 
 
   exportToPDF(e) {
 
@@ -205,18 +244,43 @@ export class SpecsdetailsComponent implements AfterViewChecked, OnInit {
     var button = $("#exportToPDF");
     button.css("display", "none");
 
+    var scroll = $("#scroll");
+    scroll.css("display", "none");
+
+    var title = $(".float-center");
+    title.css("position", "relative");
+
+    var screenHeight = screen.height - 200;
+    console.log("Screen Height: " + screenHeight);
+
+    var renderFooter = true;
+
+    if (screenHeight > this.balanceHeight)
+      renderFooter = false;
+
+    var footer = $("#footer");
+
+    if (renderFooter) {
+      footer.css("position", "relative");
+      footer.css("margin-top", "0");
+    }
+
     var data = document.getElementById('content');
-    console.log(data);
-    
+    //console.log(data);
+
+
     html2canvas(data).then(canvas => {
       // Few necessary setting options  
-      console.log("Canvas Height: " + canvas.height);
-      console.log("Canvas Width: " + canvas.width);
+     // console.log("Canvas Height: " + canvas.height);
+    //  console.log("Canvas Width: " + canvas.width);
 
       var imgWidth = 208;
       var pageHeight = 350;
       var imgHeight = canvas.height * imgWidth / canvas.width;
       var heightLeft = imgHeight;
+      // console.log(imgWidth);
+      // console.log(pageHeight);
+      // console.log(heightLeft);
 
       const contentDataURL = canvas.toDataURL('image/png')
       let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
@@ -225,6 +289,15 @@ export class SpecsdetailsComponent implements AfterViewChecked, OnInit {
       pdf.save(this.productSpecs.styleId + ".pdf"); // Generated PDF   
 
       button.css("display", "block");
+      scroll.css("display", "block");
+      title.css("position", "absolute");
+
+      if (renderFooter) {
+        footer.css("position", "fixed");
+        footer.css("margin-top", "-50px");
+      }
+
+
     });
   }
 
@@ -234,12 +307,12 @@ export class SpecsdetailsComponent implements AfterViewChecked, OnInit {
     let balanceHeight = totalHtmlHeight / 2;
     this.balanceHeight = balanceHeight;
 
-    console.log("Balance Height: " + balanceHeight);
+    // console.log("Balance Height: " + balanceHeight);
 
     this.getClosestBalanceHeight(this.productSpecsCategoryList);
 
     let closestBalanceCombination = this.findClosestToBalanceHeight(this.firstColumnIndexHeight);
-    console.log("closestBalanceCombination: " + closestBalanceCombination);
+    // console.log("closestBalanceCombination: " + closestBalanceCombination);
 
     if (closestBalanceCombination.length) {
       let closestIndex = closestBalanceCombination.split("|");
@@ -247,20 +320,20 @@ export class SpecsdetailsComponent implements AfterViewChecked, OnInit {
         return prod.index == closestIndex[0];
       });
 
-      console.log(closestPossibleCombination);
+      // console.log(closestPossibleCombination);
 
       this.firstColumn = closestPossibleCombination.firstColumn;
       this.secondColumn = closestPossibleCombination.secondColumn;
 
 
-      console.log("#hidden-content removed");
+      // console.log("#hidden-content removed");
       $("#hidden-content").remove();
 
       let firstColumnHtml = this.getFirstColumnHtml(this.firstColumn);
-      console.log(firstColumnHtml);
+      //  console.log(firstColumnHtml);
 
       let secondColumnHtml = this.getSecondColumnHtml(this.secondColumn);
-      console.log(secondColumnHtml);
+      // console.log(secondColumnHtml);
 
       $("#firstColumn").html(firstColumnHtml);
       $("#secondColumn").html(secondColumnHtml);
@@ -298,7 +371,7 @@ export class SpecsdetailsComponent implements AfterViewChecked, OnInit {
           childElement += comment.text + "</div>";
 
           if (comment.attachment) {
-            
+
             childElement +=
               "<div class='pad-top'><div class='center'>" +
               "<a data-fancybox='images' data-height='1365' href='assets/images/" + comment.attachment + "'>" +
@@ -338,6 +411,7 @@ export class SpecsdetailsComponent implements AfterViewChecked, OnInit {
       "<div class='panel-body'><div class='center'><a href='assets/images/" + attachment +
       "' data-fancybox='images' data-height='1365'><img src='assets/images/" + attachment +
       "'alt='" + attachment + "' />" +
+      "<input type='hidden' id='sketchProd' value='" + this.productSpecs.recId.toLowerCase() + "' />" +
       "</a></div></div></div>"
 
     secondColumnHtml += sketchHtml;
@@ -409,15 +483,13 @@ export class SpecsdetailsComponent implements AfterViewChecked, OnInit {
     return all;
 
   }
-  
+
   findClosestToBalanceHeight(listHeight: any): any {
 
     let goal = this.balanceHeight;
     console.log("Goal: " + goal);
-
-    //listHeight.sort((a, b) => a - b);
-
-    console.log(listHeight);
+    
+    // console.log(listHeight);
 
     if (listHeight.length) {
 
@@ -431,7 +503,7 @@ export class SpecsdetailsComponent implements AfterViewChecked, OnInit {
         return aParse - bParse;
       });
 
-      console.log(listHeight);
+      // console.log(listHeight);
 
       let closest = parseFloat(listHeight[0].split("|")[1]);
       let secondHeight = parseFloat(listHeight[0].split("|")[2]);
@@ -461,20 +533,20 @@ export class SpecsdetailsComponent implements AfterViewChecked, OnInit {
   }
 
   getClosestBalanceHeight(productSpecsCategoryList: ProductSpecsCategory[]): void {
-    console.log("getCombinations");
+    //console.log("getCombinations");
 
     var recIds = [];
 
-    console.log(productSpecsCategoryList);
+    // console.log(productSpecsCategoryList);
     for (let index in productSpecsCategoryList) {
-      console.log(productSpecsCategoryList[index]);
+      // console.log(productSpecsCategoryList[index]);
       recIds.push(productSpecsCategoryList[index].recId);
     }
 
-    console.log(recIds);
+  //  console.log(recIds);
 
     let arrayCombinations = this.getArrayCombinations(recIds, 1);
-    console.log(arrayCombinations);
+    //console.log(arrayCombinations);
 
     let index = 0;
 
@@ -497,14 +569,14 @@ export class SpecsdetailsComponent implements AfterViewChecked, OnInit {
         firstColumn.push(prodSpecs)
       }
 
-      console.log(firstColumn);
-      console.log("First Column Total Height: " + firstColumnTotalHtmlHeight);
-      
+     // console.log(firstColumn);
+     // console.log("First Column Total Height: " + firstColumnTotalHtmlHeight);
+
       var secondColumnCombinations = recIds.filter(function (item) {
         return arrayCombinations[firstIndex].indexOf(item) === -1;
       });
 
-      console.log(secondColumnCombinations);
+    //  console.log(secondColumnCombinations);
 
 
       for (let secondIndex in secondColumnCombinations) {
@@ -521,8 +593,8 @@ export class SpecsdetailsComponent implements AfterViewChecked, OnInit {
 
       secondColumnTotalHtmlHeight = secondColumnTotalHtmlHeight + this.sketchHeight;
 
-      console.log(secondColumnTotalHtmlHeight);
-      console.log(secondColumn);
+    //  console.log(secondColumnTotalHtmlHeight);
+     // console.log(secondColumn);
 
       if (firstColumn.length) {
         let specsColumnCombinations = new SpecsColumnCombinations();
@@ -543,56 +615,37 @@ export class SpecsdetailsComponent implements AfterViewChecked, OnInit {
 
     }
 
-    console.log(this.specsColumnCombinations);
+  //  console.log(this.specsColumnCombinations);
   }
 
-  
+
   getProductSpecsByStyleId(): void {
     let seasonId = this.route.snapshot.params.seasonId;
     let styleId = this.route.snapshot.params.styleId;
     let sampleStage = this.route.snapshot.params.sampleStage;
-    console.log("Season ID: " + seasonId);
-    console.log("Style ID: " + styleId);
-    console.log("Sample Stage: " + sampleStage);
+    // console.log("Season ID: " + seasonId);
+    // console.log("Style ID: " + styleId);
+    // console.log("Sample Stage: " + sampleStage);
 
-    this.productSpecsService.getProductSpecsByStyleId(seasonId, styleId, sampleStage)
+    this.httpSubscription = this.productSpecsService.getProductSpecsByStyleId(seasonId, styleId, sampleStage)
       .subscribe((productSpecsByCategory: ProductSpecsByCategory) => {
 
-        console.log("Hey");
+        // console.log("Hey");
 
-        console.log(productSpecsByCategory);
+        // console.log(productSpecsByCategory);
 
         this.productSpecsByCategory = productSpecsByCategory;
 
         this.productSpecs = productSpecsByCategory.productSpecs;
 
-        console.log(this.productSpecs);
+        // console.log(this.productSpecs);
 
         var dictionary = productSpecsByCategory.productSpecsByCategoryCollection as ProductSpecsCategory[];
 
-       // let approved = false;
         for (var prodByCategory in dictionary) {
           this.productSpecsCategoryList.push(dictionary[prodByCategory]);
-
-          
-          // let comments = dictionary[prodByCategory].productSpecsComments;
-          // for (let index in comments) {
-          //   console.log(comments[index].category);
-
-          //   if (comments[index].approvedBy || comments[index].approvedDate) {
-          //     if (approved)
-          //       continue;
-
-          //     approved = true;
-          //     console.log("loop break");
-
-          //   }
-          // }
-
         }
 
-        //console.log("approved: " + approved);
-        //this.approved = approved;
       });
 
     console.log("getProductSpecsByStyleId Done");

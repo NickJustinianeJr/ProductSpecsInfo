@@ -14,7 +14,7 @@ export class ProductSpecs {
     updatedDate: string;
     attachment: string;
     attachmentHeight: number;
-    CFTInCharge: string;
+    cftInCharge: string;
     BRDate: string;
     BUTeam: string;
     
