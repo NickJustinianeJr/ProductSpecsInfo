@@ -1,0 +1,425 @@
+.logout-button {
+    background: transparent;
+    border: none !important;
+    color: #566473;
+    font-weight: bold;
+    margin-left: 2px;
+}
+
+.gn-menu-main {
+    height: 40px;
+}
+
+.welcome { 
+    color: white; 
+    font-family: 'Helvetica Neue', sans-serif; 
+    font-size: 35px; 
+    font-weight: bold; 
+    letter-spacing: -1px; 
+    line-height: 1; 
+    text-align: center;    
+}
+
+.heading {
+  margin-bottom: 10px;
+}
+
+#firstColumn {
+  margin: 0px !important;
+  padding: 0px !important;
+}
+
+#secondColumn {
+  margin: 0px !important;
+  padding: 0px !important;
+}
+
+.assets-img {
+  height: auto; 
+  width: auto;
+  max-width: 100%
+}
+
+.main-content {
+  
+  margin-top: 40px;
+  
+}
+
+.float-center{
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#exportToPDF {
+  display: block;
+}
+
+#exportToPDFSearch {
+  display: none;
+}
+
+#searchBox {
+  display: block;
+}
+
+
+#hidden-content {
+  visibility: hidden;
+  /* visibility: visible; */
+  display: "block";
+}
+
+
+#hidden2-content {
+  visibility: hidden;
+  /* visibility: visible; */
+  display: "block";
+}
+
+.main-margin {
+  margin-right: 25px;
+	margin-left: 25px;
+}
+
+.main-content-nomargin {  
+	margin-top: 40px;	
+}
+
+.main-content-notop {  
+	margin-top: 0px;	
+}
+
+.context-resize {
+	width: 60%;
+	float: right;	
+}
+
+.horizontal-list {
+  margin: 0px;
+  padding: 0px;
+  border-color: #3b4146;
+ 
+}
+
+.col-auto-left {
+  width: 50%;
+}
+
+.col-auto-right {
+  width: 50%;
+  /* margin-left: 0px !important;
+  margin-right: 100px !important;
+  text-align: right !important; */
+}
+
+.searchbox {
+  margin: 0px !important;
+}
+
+.padding-zero {
+  padding: 0px !important;
+}
+
+.search-label {
+  font-size: 22px;   
+  color: #ffffff;
+  font-weight: bold;
+  margin-bottom: 3px;
+  float: left;
+}
+
+.horizontal-list {
+  display: block;  
+	list-style: none;
+ 
+ 
+  }
+  .horizontal-list li {
+    padding: 0px !important;
+    display: inline-block;
+    list-style-type: none;    
+    text-align: left;
+    
+  }
+  
+  .text-xs {
+    font-weight: 400 !important;
+    font-size: 0.7em !important;
+  }
+
+  ul.horizontal-list li:first-child {
+    margin-right: 30px !important;    
+    
+  }
+
+  .text-subject {
+    margin-top: 6px; 
+    margin-bottom: 10px !important;
+    justify-content: space-evenly;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    
+  }
+  
+.zindex {
+  z-index: 1000;
+}
+
+.autocomplete {
+    position: relative;
+    display: inline-block;
+  }
+
+.search-input {
+  font-size:14px; 
+  background-color: #e7ebee; 
+  border-radius: 15px;
+}
+
+.autocomplete {
+  /*the container must be positioned relative:*/
+  position: relative;
+  display: inline-block;
+}
+
+#myInput input {
+  border: 1px solid transparent;
+  background-color: #f1f1f1;
+  padding: 10px;
+  font-size: 16px;
+}
+
+#myInput input[type=text] {
+  background-color: #f1f1f1;
+  width: 100%;
+}
+
+#myInput input[type=submit] {
+  background-color: DodgerBlue;
+  color: #fff;
+  cursor: pointer;
+}
+
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff; 
+  border-bottom: 1px solid #d4d4d4;
+  color: black; 
+}
+
+.autocomplete-items div:hover {
+  /*when hovering an item:*/
+  background-color: #e9e9e9; 
+}
+
+.autocomplete-active {
+  /*when navigating through the items using the arrow keys:*/
+  background-color: DodgerBlue !important; 
+  color: #ffffff; 
+}
+
+
+/* 
+.search {
+  margin-top: 5px;
+  z-index: 0px !important;
+}
+
+.search input {
+    border: 1px solid transparent;
+    background-color: #f1f1f1;
+    padding: 10px;
+    font-size: 16px;
+  }
+
+  .search input[type=text] {
+    background-color: #f1f1f1;
+    width: 100%;
+  }
+
+  .search input[type=submit] {
+    background-color: DodgerBlue;
+    color: #fff;
+    cursor: pointer;
+  } */
+
+  .autocomplete-items {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    
+    top: 100%;
+    left: 0;
+    right: 0;
+  }
+
+  .autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff; 
+    border-bottom: 1px solid #d4d4d4;
+    color: black; 
+  }
+
+  .autocomplete-items div:hover {
+    background-color: #e9e9e9; 
+  }
+
+  .autocomplete-active {
+    background-color: DodgerBlue !important; 
+    color: #ffffff; 
+  }
+
+  .panel-colorful {
+    position: relative !important;
+  }
+
+  .nav-normal {
+    background-color: #3b4146;
+    width: 100%;
+    height: auto !important;
+    text-align: left !important;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  
+  #specs-container {
+    padding-top: 30px !important;
+    padding-bottom: 100px !important;
+  }
+  
+  
+  .pad-bot {
+    position: relative !important;
+  }
+
+  .header {    
+    overflow: hidden;
+    background-color: #003366;
+    padding: 15px 8px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  .header u {
+    float: left;
+    color: black;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+    font-size: 18px; 
+    line-height: 15px;
+    border-radius: 4px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+  }
+  
+  .header u.logo {
+    font-size: 25px;
+    font-weight: bold;
+  }
+  .header-right {
+    float: right;
+  }
+  
+  @media screen and (max-width: 500px) {
+    .header u {
+      float: none;
+      display: block;
+      text-align: left;
+    }
+    .header-right {
+      float: none;
+    }
+  }
+
+  .center {
+    text-align: center !important;
+    display: block;
+    text-align: -webkit-center;
+  }
+
+  .thumbnail {
+    text-align: center !important;
+  }
+
+  .boxed {
+    min-height: 768px;
+    height: auto;
+    background: #e7ebee !important;
+    padding-top: 15px !important;
+    padding-bottom: 50px !important;
+    z-index: -1;
+  }
+
+ .specs-table {
+  width: 100% !important;
+ }
+  
+ .export {
+   text-align: right !important;
+   margin-right: 15px !important;
+   float: right;
+   right: 0 !important;
+   position: relative;
+   z-index: 99;
+ }
+  
+  .specs-table tr:not(:last-child) {
+    border-bottom: 1px solid #5FA2DD;
+  }
+
+  .panel-primary {
+    border-color: #337ab7;
+  }
+  .panel-primary > .panel-heading {
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #337ab7;
+  }
+  .panel-primary > .panel-heading + .panel-collapse > .panel-body {
+    border-top-color: #337ab7;
+  }
+  .panel-primary > .panel-heading .badge {
+    color: #337ab7;
+    background-color: #fff;
+  }
+  .panel-primary > .panel-footer + .panel-collapse > .panel-body {
+    border-bottom-color: #337ab7;
+  }
+
+  
+  .pad-top {
+    text-align: center;
+  }
+
+  .panel-heading {
+    background-color: #5fa2dd !important;
+    border-color: #5fa2dd !important;
+  }
+
+  h4 {
+    margin-bottom: 0px !important;
+  }
+
+  #searchValidation {
+    display: none;
+  }
