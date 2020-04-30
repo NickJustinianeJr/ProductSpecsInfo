@@ -27,7 +27,7 @@
     "file-saver": "^2.0.2",
     "font-awesome": "^4.7.0",
     "html2canvas": "^1.0.0-rc.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "jspdf": "^1.5.3",
     "nifty": "0.0.10",
     "node": "^12.3.1",
